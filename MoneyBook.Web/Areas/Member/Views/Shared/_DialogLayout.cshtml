@@ -1,0 +1,42 @@
+﻿<div class="modal fade" id="@MoneyBookDialogUtils.DefaultDialogId" tabindex="-1" role="dialog" aria-labelledby="@ViewBag.Title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@ViewBag.Title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @if ((ViewData.ModelState[""] != null && ViewData.ModelState[""].Errors.Count() > 0) ||
+                    !string.IsNullOrWhiteSpace(ViewBag.Message?.ToString())
+                ) {
+                    <div class="alert alert-dismissible alert-danger">
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>
+                        @RenderSection("Message", required: false)
+                    </div>
+                } else {
+                    @RenderSection("Message", required: false)
+                }
+                @RenderBody()
+            </div>
+            <div class="modal-footer">
+                @RenderSection("Buttons", required: false)
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    +function () {
+        var formSelector = '#@MoneyBookDialogUtils.DefaultDialogId form';
+        $(formSelector).each(function () {
+            $(this).validate().destroy();
+        }).removeData('unobtrusiveValidation');
+        $.validator.unobtrusive.parse(formSelector);
+
+        // 避免ajax重複Loading畫面進來時，<div class=".modal-backdrop" />重複堆疊
+        $('.modal-backdrop').remove();
+        $('#@MoneyBookDialogUtils.DefaultDialogId').modal({ show: true });
+    }();
+</script>
+@RenderSection("Scripts", required: false)

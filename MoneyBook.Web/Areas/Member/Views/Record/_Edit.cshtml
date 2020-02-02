@@ -1,0 +1,89 @@
+﻿@model MoneyBook.Web.Areas.Member.ViewModels.RecordModel.EditViewModel
+@{
+    Layout = "~/Areas/Member/Views/Shared/_DialogLayout.cshtml";
+    ViewBag.Title = "收入/支出管理";
+    AjaxOptions ajaxOptions = MoneyBookDialogUtils.CreateFormAjaxOptions();
+    ajaxOptions.OnSuccess = "onDialogSuccess";
+    bool isEdit = Model.Editor.Id.HasValue;
+}
+@using (Ajax.BeginForm(null, null, ajaxOptions, new { Id = "dialogForm" })) {
+    @Html.AntiForgeryToken()
+    if (Model.Editor.Id.HasValue) {
+        @Html.HiddenFor(x => x.Editor.Id)
+    }
+    <div class="form-group">
+        @Html.LabelFor(x => x.Editor.PayType, new { @class = "col-form-label" })
+        <div>
+            @Html.AjaxDropDownListFor(x => x.Editor.PayType, "dialog", Url.Action("GetPayTypes"), htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Editor.PayType, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Editor.CategoryId, new { @class = "col-form-label" })
+        <div>
+            @Html.AjaxDropDownListFor(x => x.Editor.CategoryId, "dialog", Url.Action("GetCategories"), nonUsedLabel: "請選擇收入/支出", htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Editor.CategoryId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Editor.CategoryItemId, new { @class = "col-form-label" })
+        <div>
+            @Html.AjaxDropDownListFor(x => x.Editor.CategoryItemId, "dialog", Url.Action("GetCategoryItems"), nonUsedLabel: "請選擇類別", htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Editor.CategoryItemId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Editor.TradeDate, htmlAttributes: new { @class = "control-label" })
+        <div>
+            @Html.EditorFor(x => x.Editor.TradeDate, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(x => x.Editor.TradeDate, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Editor.Money, htmlAttributes: new { @class = "control-label" })
+        <div>
+            @Html.EditorFor(x => x.Editor.Money, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(x => x.Editor.Money, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Editor.Note, htmlAttributes: new { @class = "control-label" })
+        <div>
+            @Html.EditorFor(x => x.Editor.Note, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(x => x.Editor.Note, "", new { @class = "text-danger" })
+        </div>
+    </div>
+}
+
+@section Message {
+    @ViewBag.Message
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+}
+
+@section Buttons {
+    <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+    <button type="submit" form="dialogForm" formaction="@Url.Action(isEdit ? "Edit" : "Create")" class="btn btn-primary">儲存</button>
+    @if (!isEdit) {
+        <button type="submit" form="dialogForm" formaction="@Url.Action("CreateNext")" class="btn btn-primary">儲存並新增下一筆</button>
+    }
+}
+
+@section Scripts {
+    <script>
+        var onDialogSuccess = function (result) {
+            if (result.IsSuccess) {
+                alert("執行成功!");
+                $('#@MoneyBookDialogUtils.DefaultDialogId').modal('dispose');
+                location.reload();
+            }
+        };
+        LinkedDropDownList.parse("#dialogForm");
+        createDateTimePicker();
+
+        @*// 處理CreateNew的時候關閉Dialog時backdrop還會存在的問題
+        $('#@MoneyBookDialogUtils.DefaultDialogId').on('hidden.bs.modal', function (e) {
+            $(this).modal('dispose');
+            $('.modal-backdrop').remove();
+        })*@
+    </script>
+}

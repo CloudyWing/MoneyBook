@@ -1,0 +1,50 @@
+﻿@model MoneyBook.Web.Areas.Member.ViewModels.CategoryModel.EditItemViewModel
+@{
+    Layout = "~/Areas/Member/Views/Shared/_DialogLayout.cshtml";
+    ViewBag.Title = "類別細項管理";
+    AjaxOptions ajaxOptions = MoneyBookDialogUtils.CreateFormAjaxOptions();
+    ajaxOptions.OnSuccess = "onDialogSuccess";
+}
+@using (Ajax.BeginForm(null, null, ajaxOptions, new { id = "dialogForm" })) {
+    @Html.AntiForgeryToken()
+    if (Model.Editor.Id.HasValue) {
+        @Html.HiddenFor(x => x.Editor.Id)
+    }
+    <div class="form-group">
+        @Html.LabelFor(x => x.Editor.CategoryId, new { @class = "col-form-label" })
+        <div>
+            @Html.DropDownListFor(x => x.Editor.CategoryId, Model.Categories, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.Editor.CategoryId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(x => x.Editor.Name, new { @class = "col-form-label" })
+        <div>
+            @Html.EditorFor(x => x.Editor.Name, new { htmlAttributes = new { @class = "form-control trim", placeholder = "Category Item Name" } })
+            @Html.ValidationMessageFor(x => x.Editor.Name, "", new { @class = "text-danger" })
+        </div>
+    </div>
+}
+
+@section Message {
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+}
+
+@section Buttons {
+    <button type="button" class="btn btn-default" data-dismiss="modal">關閉</button>
+    <button type="submit" form="dialogForm"
+        formaction="@(Url.Action(Model.Editor.Id.HasValue ? "Edit" : "Create"))Item" class="btn btn-primary">
+        儲存
+    </button>
+}
+
+@section Scripts {
+    <script>
+        var onDialogSuccess = function (result) {
+            if (result.IsSuccess) {
+                alert("執行成功!");
+                location.href = "@Url.Action("Index")";
+            }
+        };
+    </script>
+}

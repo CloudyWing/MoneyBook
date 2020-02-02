@@ -1,0 +1,25 @@
+﻿@if (Request.IsAuthenticated) {
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="moneyBookMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Money Book
+            </a>
+            <div class="dropdown-menu" aria-labelledby="moneyBookMenuLink">
+                @Html.ActionLink("類別管理", "Index", "Category", new { area = "Member" }, new { @class = "dropdown-item" })
+                @Html.ActionLink("收入/支出管理", "Index", "Record", new { area = "Member" }, new { @class = "dropdown-item" })
+            </div>
+        </li>
+    </ul>
+} else {
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            @Html.ActionLink("首頁", "Index", "Home", null, new { @class = "nav-link" })
+        </li>
+        <li class="nav-item">
+            @Html.ActionLink("關於", "About", "Home", null, new { @class = "nav-link" })
+        </li>
+        <li class="nav-item">
+            @Html.ActionLink("連絡方式", "Contact", "Home", null, new { @class = "nav-link" })
+        </li>
+    </ul>
+}

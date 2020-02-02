@@ -1,0 +1,75 @@
+﻿@using MoneyBook.Web.Areas.Member.ViewModels.RecordModel;
+
+@model IndexViewModel
+@{
+    ViewBag.Title = "收入/支出管理";
+}
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form1", enctype = "multipart/form-data" })) {
+    @Html.AntiForgeryToken()
+    <div class="form-group row">
+        @Html.LabelFor(x => x.Condition.PayType, new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10">
+            @Html.AjaxDropDownListFor(x => x.Condition.PayType, "index", Url.Action("GetPayTypes"), optionLabel: "全部", htmlAttributes: new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group row">
+        @Html.LabelFor(x => x.Condition.CategoryId, new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10">
+            @Html.AjaxDropDownListFor(x => x.Condition.CategoryId, "index", Url.Action("GetCategories"), optionLabel: "全部", nonUsedLabel: "請選擇出入/支出", htmlAttributes: new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group row">
+        @Html.LabelFor(x => x.Condition.CategoryItemId, new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10">
+            @Html.AjaxDropDownListFor(x => x.Condition.CategoryItemId, "index", Url.Action("GetCategoryItems"), optionLabel: "全部", nonUsedLabel: "請選擇類別", htmlAttributes: new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group row">
+        @Html.LabelFor(x => x.Condition.TradeDateRange, new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10 form-inline">
+            @Html.EditorFor(x => x.Condition.TradeDateStartRange, new { htmlAttributes = new { @class = "form-control" } })
+            &nbsp;~&nbsp;
+            @Html.EditorFor(x => x.Condition.TradeDateEndRange, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(x => x.Condition.TradeDateStartRange, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(x => x.Condition.TradeDateEndRange, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        @Html.LabelFor(x => x.Condition.MoneyRange, new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10 form-inline">
+            @Html.EditorFor(x => x.Condition.MoneyStartRange, new { htmlAttributes = new { @class = "form-control" } })
+            &nbsp;~&nbsp;
+            @Html.EditorFor(x => x.Condition.MoneyEndRange, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(x => x.Condition.MoneyStartRange, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(x => x.Condition.MoneyEndRange, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group row">
+        @Html.LabelFor(x => x.Condition.Note, new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10">
+            @Html.EditorFor(x => x.Condition.Note, new { htmlAttributes = new { @class = "form-control" } })
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-12">
+            <button button="submit" formaction="@Url.Action("Index")" class="btn btn-primary">查詢</button>
+        </div>
+    </div>
+}
+<div id="@MoneyBookDialogUtils.DefaultDialogId" role="dialog"></div>
+
+@section Message {
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+}
+
+@section Buttons {
+    @Ajax.ActionLink("新增", "Create", null, MoneyBookDialogUtils.CreateOpenAjaxOptions(), new { @class = "btn btn-primary" })
+}
+
+@section List {
+    @if (Model.DataList.Count > 0) {
+        @Html.Partial("_List", Model)
+    } else {
+        @Html.Partial("_NoDataPartial")
+    }
+}

@@ -1,0 +1,78 @@
+﻿@using MoneyBook.Web.Areas.Member.ViewModels.RecordModel;
+
+@model IndexViewModel
+@{
+    Layout = "~/Areas/Member/Views/Shared/_PagedLayout.cshtml";
+}
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(x => x.DataList.FirstOrDefault().CategoryItem.Category.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => x.DataList.FirstOrDefault().CategoryItem.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => x.DataList.FirstOrDefault().CategoryItem.Category.PayType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => x.DataList.FirstOrDefault().TradeDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => x.DataList.FirstOrDefault().Money)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => x.DataList.FirstOrDefault().Note)
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var record in Model.DataList) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(x => record.CategoryItem.Category.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => record.CategoryItem.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => record.CategoryItem.Category.PayTypeConstant)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => record.TradeDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => record.Money)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => record.Note)
+                </td>
+                <td>
+                    @using (Ajax.BeginForm("Index", MoneyBookPagedConfigUtils.CreatePagedAjaxOptions())) {
+                        @Html.AntiForgeryToken()
+                        @Ajax.ActionLink("編輯", "Edit", new { Id = record.Id }, MoneyBookDialogUtils.CreateOpenAjaxOptions(), new { @class = "btn btn-primary" })
+                        
+                        // 不可以用Html.Hidden()，不然MVC的ajax替換功能有問題
+                        <input type="hidden" name="Id" value="@record.Id" />
+                        <button type="submit" formaction="@Url.Action("Delete")" class="btn btn-warning delete">刪除</button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section BottomPager {
+    @Html.PagedListPager(
+        Model.DataList,
+        page => {
+            RouteValueDictionary route = new RouteValueDictionary(Model.Condition);
+            route.Add(nameof(Model.PageNumber), page);
+            return Url.Action("AjaxIndex", route);
+        },
+        MoneyBookPagedConfigUtils.GetPagedListRenderOptions()
+    )
+}

@@ -1,0 +1,31 @@
+﻿@model DateTime?
+@{
+    IDictionary<string, object> htmlAttributes;
+    object htmlAttributesObject = ViewData["htmlAttributes"];
+    string defaultClass = "text-box single-line datePicker";
+
+    if (htmlAttributesObject != null) {
+        IDictionary<string, object> htmlAttributesDict = htmlAttributesObject as IDictionary<string, object>;
+
+        htmlAttributes = htmlAttributesDict ?? HtmlHelper.AnonymousObjectToHtmlAttributes(htmlAttributesObject);
+
+        object htmlClassName;
+        if (htmlAttributes.TryGetValue("class", out htmlClassName)) {
+            htmlAttributes["class"] = htmlClassName + " " + defaultClass;
+        } else {
+            htmlAttributes.Add("class", defaultClass);
+        }
+    } else {
+        htmlAttributes = new Dictionary<string, object>() {
+            ["class"] = defaultClass
+        };
+    }
+
+    htmlAttributes.Add("type", "text");
+
+}
+@Html.TextBox(
+    "",
+    Model.HasValue ? Model.Value.ToString("yyyy/MM/dd") : "",
+    htmlAttributes: htmlAttributes
+)

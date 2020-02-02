@@ -1,0 +1,14 @@
+﻿[
+  {
+    "outputFile": "Content/bootstrap.css",
+    "inputFile": "Content/bootstrap/bootstrap.scss"
+  },
+  {
+    "outputFile": "Content/bootstrap-grid.css",
+    "inputFile": "Content/bootstrap/bootstrap-grid.scss"
+  },
+  {
+    "outputFile": "Content/bootstrap-reboot.css",
+    "inputFile": "Content/bootstrap/bootstrap-reboot.scss"
+  }
+]

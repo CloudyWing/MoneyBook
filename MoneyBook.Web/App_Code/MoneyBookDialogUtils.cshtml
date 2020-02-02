@@ -1,0 +1,31 @@
+﻿@using System.Web.Mvc.Ajax;
+
+@functions {
+    public static string DefaultDialogId = "dialog";
+
+    /// <summary>
+    /// HttpMethod: get,
+    /// InsertionMode: InsertionMode.ReplaceWith,
+    /// UpdateTargetId: dialog
+    /// </summary>
+    public static AjaxOptions CreateOpenAjaxOptions() {
+        return new AjaxOptions() {
+            HttpMethod = "get",
+            InsertionMode = InsertionMode.ReplaceWith,
+            UpdateTargetId = DefaultDialogId
+        };
+    }
+
+    /// <summary>
+    /// HttpMethod: post,
+    /// InsertionMode: InsertionMode.ReplaceWith,
+    /// UpdateTargetId: dialog
+    /// </summary>
+    public static AjaxOptions CreateFormAjaxOptions() {
+        return new AjaxOptions() {
+            HttpMethod = "post",
+            InsertionMode = InsertionMode.ReplaceWith,
+            UpdateTargetId = DefaultDialogId
+        };
+    }
+}

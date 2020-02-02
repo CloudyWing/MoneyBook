@@ -1,0 +1,80 @@
+[
+  {
+    "outputFileName": "Scripts/bootstrap.bundle.min.js",
+    "inputFiles": [
+      "Scripts/bootstrap.bundle.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/bootstrap.min.js",
+    "inputFiles": [
+      "Scripts/bootstrap.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/jquery-3.3.1.min.js",
+    "inputFiles": [
+      "Scripts/jquery-3.3.1.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/jquery-3.3.1.slim.min.js",
+    "inputFiles": [
+      "Scripts/jquery-3.3.1.slim.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/jquery.unobtrusive-ajax.min.js",
+    "inputFiles": [
+      "Scripts/jquery.unobtrusive-ajax.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/jquery.validate.min.js",
+    "inputFiles": [
+      "Scripts/jquery.validate.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/jquery.validate.unobtrusive.min.js",
+    "inputFiles": [
+      "Scripts/jquery.validate.unobtrusive.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/moment-with-locales.min.js",
+    "inputFiles": [
+      "Scripts/moment-with-locales.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/moment.min.js",
+    "inputFiles": [
+      "Scripts/moment.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/popper-utils.min.js",
+    "inputFiles": [
+      "Scripts/popper-utils.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/respond.matchmedia.addListener.min.js",
+    "inputFiles": [
+      "Scripts/respond.matchmedia.addListener.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/respond.min.js",
+    "inputFiles": [
+      "Scripts/respond.js"
+    ]
+  },
+  {
+    "outputFileName": "Scripts/popper.min.js",
+    "inputFiles": [
+      "Scripts/popper.js"
+    ]
+  }
+]

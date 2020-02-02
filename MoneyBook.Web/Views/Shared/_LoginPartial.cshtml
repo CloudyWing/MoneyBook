@@ -1,0 +1,24 @@
+﻿@using MoneyBook.Web.Models;
+@if (Request.IsAuthenticated) {
+    using (Html.BeginForm("LogOff", "Account", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" })) {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li class="nav-item">
+                @Html.ActionLink("Hello " + User.Identity.GetNickname() + "!", "Index", "Manage", routeValues: new { area = "Identity" }, htmlAttributes: new { @class = "nav-link", title = "Manage" })
+            </li>
+            <li class="nav-item">
+                <a href="#" onclick="document.getElementById('logoutForm').submit()" class="nav-link">登出</a>
+            </li>
+        </ul>
+    }
+} else {
+    <ul class="nav navbar-nav navbar-right">
+        <li class="nav-item">
+            @Html.ActionLink("註冊", "Register", "Account", routeValues: new { area = "" }, htmlAttributes: new { @class = "nav-link", id = "registerLink" })
+        </li>
+        <li class="nav-item">
+            @Html.ActionLink("登入", "Login", "Account", routeValues: new { area = "" }, htmlAttributes: new { @class = "nav-link", id = "loginLink" })
+        </li>
+    </ul>
+}

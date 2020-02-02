@@ -1,0 +1,105 @@
+﻿@using MoneyBook.Web.Areas.Member.ViewModels.CategoryModel;
+@using MoneyBook.Web.Models.Constants;
+
+@model IndexViewModel
+@{
+    Layout = "~/Areas/Member/Views/Shared/_PagedLayout.cshtml";
+}
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(x => x.DataList.FirstOrDefault().PayType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => x.DataList.FirstOrDefault().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(x => x.DataList.FirstOrDefault().IsDisabled)
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int categoryIndex = 0;
+        }
+        @foreach (var category in Model.DataList) {
+            int categoryItemIndex = 0;
+            OptionState buttonState = category.IsDisabled;
+            <tr>
+                <td>
+                    @Html.DisplayFor(x => category.PayTypeConstant.Text)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => category.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(x => category.OptionState)
+                </td>
+                <td>
+                    @using (Ajax.BeginForm(MoneyBookPagedConfigUtils.CreatePagedAjaxOptions())) {
+                        @Html.AntiForgeryToken()
+                        @Ajax.ActionLink("編輯", "Edit", new { Id = category.Id }, MoneyBookDialogUtils.CreateOpenAjaxOptions(), new { @class = "btn btn-primary" })
+                        
+                        // 不可以用Html.Hidden()，不然MVC的ajax替換功能有問題
+                        <input type="hidden" name="Id" value="@category.Id" />
+                        if (category.CategoryItems.Count() == 0) {
+                            <button type="submit" formaction="@Url.Action("Delete")" class="btn btn-warning delete">刪除</button>
+                        }
+                        <button type="submit" formaction="@Url.Action(buttonState.Name)" class="btn btn-secondary">@buttonState.Text</button>
+
+                        bool isNotFirstCategory = categoryIndex != 0;
+                        bool isNotLastCategory = categoryIndex != Model.DataList.Count() - 1;
+                        if (isNotFirstCategory) {
+                            <button type="submit" formaction="@Url.Action("MoveUp")" class="btn btn-secondary">上移</button>
+                        }
+
+                        if (isNotLastCategory) {
+                            <button type="submit" formaction="@Url.Action("MoveDown")" class="btn btn-secondary">下移</button>
+                        }
+                    }
+                </td>
+            </tr>
+            foreach (var categoryItem in category.CategoryItems) {
+                OptionState itemButtonState = categoryItem.IsDisabled;
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.DisplayFor(x => categoryItem.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(x => categoryItem.OptionState)
+                    </td>
+                    <td>
+                        @using (Ajax.BeginForm(MoneyBookPagedConfigUtils.CreatePagedAjaxOptions())) {
+                            @Ajax.ActionLink("編輯", "EditItem", new { Id = categoryItem.Id }, MoneyBookDialogUtils.CreateOpenAjaxOptions(), new { @class = "btn btn-primary" })
+                            @Html.AntiForgeryToken()
+                            // 不可以用Html.Hidden()，不然MVC的ajax替換功能有問題
+                            <input type="hidden" name="Id" value="@categoryItem.Id" />
+
+                            if (!categoryItem.HasRecords) {
+                                <button type="submit" formaction="@Url.Action("DeleteItem")" class="btn btn-warning delete">刪除</button>
+                            }
+                            <button type="submit" formaction="@Url.Action(itemButtonState.Name + "Item")" class="btn btn-secondary">@itemButtonState.Text</button>
+
+                            bool isNotFirstCategoryItem = categoryItemIndex != 0;
+                            bool isNotLastCategoryItem = categoryItemIndex != (category.CategoryItems.Count() - 1);
+
+                            if (isNotFirstCategoryItem) {
+                                <button type="submit" formaction="@Url.Action("MoveUpItem")" class="btn btn-secondary">上移</button>
+                            }
+
+                            if (isNotLastCategoryItem) {
+                                <button type="submit" formaction="@Url.Action("MoveDownItem")" class="btn btn-secondary">下移</button>
+                            }
+                        }
+                    </td>
+                </tr>
+                categoryItemIndex++;
+            }
+            categoryIndex++;
+        }
+    </tbody>
+</table>

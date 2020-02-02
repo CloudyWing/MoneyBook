@@ -1,0 +1,22 @@
+﻿@using System.Web.Mvc.Ajax;
+@using PagedList.Mvc;
+
+@functions {
+
+    /// <summary>
+    /// HttpMethod: post,
+    /// UpdateTargetId: dataList
+    /// </summary>
+    public static AjaxOptions CreatePagedAjaxOptions() {
+        return new AjaxOptions() {
+            HttpMethod = "post",
+            UpdateTargetId = "dataList"
+        };
+    }
+
+    public static PagedListRenderOptions GetPagedListRenderOptions() {
+        return PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(
+            PagedListRenderOptions.ClassicPlusFirstAndLast, CreatePagedAjaxOptions()
+        );
+    }
+}
